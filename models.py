@@ -10,3 +10,7 @@ class FeedbackSaida(BaseModel):
     mentoring_name: str
     scheduled_date: datetime
     mentoring_rating: Optional[int]
+
+class FeedbackResponse(BaseModel):
+    mentoring_id: int
+    rating: int

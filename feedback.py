@@ -1,6 +1,7 @@
-from models import FeedbackSaida
+from models import FeedbackSaida,FeedbackResponse
 from typing import List
 from db import get_connection
+
 
 def gerar_feedbacks(mentored_id: int) -> List[FeedbackSaida]:
     conn = get_connection()
@@ -37,3 +38,19 @@ def gerar_feedbacks(mentored_id: int) -> List[FeedbackSaida]:
         scheduled_date=feedback['scheduled_date'],
         mentoring_rating=feedback['rating']
     ) for feedback in feedbacks]
+
+
+def gerar_avaliacao(dados: FeedbackResponse):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""UPDATE mentorings
+                      SET RATING = %s
+                      WHERE ID = %s""",(dados.rating,dados.mentoring_id,))
+    
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    return
